@@ -18,6 +18,8 @@ problem-specific solver implementations.
 - Sudoku-Extreme benchmark adapter for encoding and validation only.
 - Recurrent LDT model core with learned 2D position embeddings, optional 2D
   RoPE, per-loop candidate logits, and per-loop CLS conflict logits.
+- Shared lattice projection step with threshold elimination, conflict handling,
+  train-time solution verification, and stochastic singleton branching.
 - Deterministic tests for lattice laws, alpha semantics, masks, and Sudoku validation.
 
 ## Development
