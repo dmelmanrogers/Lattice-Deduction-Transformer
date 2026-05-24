@@ -13,6 +13,11 @@ dependencies = [
     "torch>=2.3",
 ]
 
+[project.scripts]
+ldt-eval = "ldt.cli.eval:main"
+ldt-smoke-overfit = "ldt.cli.smoke_overfit:main"
+ldt-train = "ldt.cli.train:main"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=7.1",

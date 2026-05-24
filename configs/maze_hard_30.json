@@ -1,0 +1,34 @@
+{
+  "domain": "maze",
+  "inference": {
+    "chains_per_slot": 512,
+    "model_train_mode": false,
+    "num_slots": 1,
+    "round_budget": 1000,
+    "step": {
+      "enable_branching": true,
+      "tau_decide": 1.5,
+      "theta_cls": 0.53,
+      "theta_elim": 0.1
+    }
+  },
+  "model": {
+    "candidate_channels": 2,
+    "d_model": 192,
+    "dropout": 0.1,
+    "ffn_multiplier": 4.0,
+    "input_channels": 5,
+    "num_heads": 4,
+    "num_layers": 4,
+    "num_loops": 16,
+    "num_positions": 900,
+    "position_shape": [30, 30],
+    "rope_base": 10000.0,
+    "use_rope": true
+  },
+  "name": "maze-hard-30",
+  "pool": {
+    "max_age": 100,
+    "pool_size": 384
+  }
+}
