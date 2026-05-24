@@ -16,6 +16,8 @@ problem-specific solver implementations.
 - Meet, join, alpha, consistency filtering, candidate pinning, and elimination.
 - Solver-facing domain protocol.
 - Sudoku-Extreme benchmark adapter for encoding and validation only.
+- Recurrent LDT model core with learned 2D position embeddings, optional 2D
+  RoPE, per-loop candidate logits, and per-loop CLS conflict logits.
 - Deterministic tests for lattice laws, alpha semantics, masks, and Sudoku validation.
 
 ## Development
