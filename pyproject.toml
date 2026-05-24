@@ -15,6 +15,7 @@ dependencies = [
 
 [project.scripts]
 ldt-eval = "ldt.cli.eval:main"
+ldt-prepare-sudoku-extreme = "ldt.cli.prepare_sudoku_extreme:main"
 ldt-smoke-overfit = "ldt.cli.smoke_overfit:main"
 ldt-train = "ldt.cli.train:main"
 

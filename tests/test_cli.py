@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import json
 
+from ldt.cli.prepare_sudoku_extreme import main as prepare_sudoku_extreme_main
 from ldt.cli.smoke_overfit import main as smoke_main
 from ldt.cli.train import main as train_main
+from ldt.data import load_sudoku_rows
 
 GIVENS = (
     "530070000600195000098000060800060003400803001700020006"
@@ -78,3 +80,34 @@ def test_train_cli_runs_one_bounded_step_and_writes_checkpoint(tmp_path) -> None
 
     assert exit_code == 0
     assert output_path.exists()
+
+
+def test_prepare_sudoku_extreme_cli_writes_trainer_rows(tmp_path) -> None:
+    input_path = tmp_path / "train.csv"
+    output_path = tmp_path / "train.txt"
+    input_path.write_text(
+        "\n".join(
+            [
+                "source,question,answer,rating",
+                f"fixture,{GIVENS},{SOLUTION},18",
+                "",
+            ]
+        )
+    )
+
+    exit_code = prepare_sudoku_extreme_main(
+        [
+            "--input",
+            str(input_path),
+            "--output",
+            str(output_path),
+            "--limit",
+            "1",
+            "--min-rating",
+            "10",
+        ]
+    )
+
+    assert exit_code == 0
+    assert output_path.read_text() == f"{GIVENS} {SOLUTION}\n"
+    assert len(load_sudoku_rows(output_path)) == 1

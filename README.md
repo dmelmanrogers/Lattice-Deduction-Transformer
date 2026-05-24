@@ -50,6 +50,7 @@ Train/evaluate entrypoints are available as Python modules or installed console
 commands:
 
 ```bash
-.venv/bin/python -m ldt.cli.train --config configs/sudoku_extreme.json --train-data data/sudoku.txt --steps 100 --output runs/sudoku.pt
+.venv/bin/python -m ldt.cli.prepare_sudoku_extreme --input data/raw/sudoku-extreme-train.csv --output data/sudoku-extreme/train-1k.txt --limit 1000 --min-rating 1 --shuffle --seed 0
+.venv/bin/python -m ldt.cli.train --config configs/sudoku_extreme.json --train-data data/sudoku-extreme/train-1k.txt --steps 100 --output runs/sudoku.pt
 .venv/bin/python -m ldt.cli.eval --config configs/sudoku_extreme.json --checkpoint runs/sudoku.pt --eval-data data/sudoku-test.txt
 ```
