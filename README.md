@@ -20,6 +20,9 @@ problem-specific solver implementations.
   RoPE, per-loop candidate logits, and per-loop CLS conflict logits.
 - Shared lattice projection step with threshold elimination, conflict handling,
   train-time solution verification, and stochastic singleton branching.
+- On-policy training pool for recent partially-deduced lattice states.
+- Batched inference engine with slots, parallel chains, validator-backed
+  acceptance, timeout abstention, conflict resets, and aggregate metrics.
 - Deterministic tests for lattice laws, alpha semantics, masks, and Sudoku validation.
 
 ## Development
