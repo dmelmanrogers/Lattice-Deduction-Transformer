@@ -4,11 +4,10 @@ This repository implements the Lattice Deduction Transformer described by
 Davis, Haller, Alfarano, and Santolucito in "Lattice Deduction Transformers"
 (arXiv:2605.08605).
 
-The implementation is organized around the paper's domain-agnostic structure:
+The implementation is organized around the structure outlined in the paper:
 lattice states, recurrent LDT model passes, on-policy lattice projection, and
 validator-backed inference. Benchmark domains such as Sudoku-Extreme,
-Snowflake Sudoku, and Maze-Hard are adapters over that core rather than
-problem-specific solver implementations.
+Snowflake Sudoku, and Maze-Hard are included.
 
 ## Current Slice
 
