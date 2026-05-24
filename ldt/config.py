@@ -38,15 +38,21 @@ def save_experiment_config(config: ExperimentConfig, path: str | Path) -> None:
 
 def load_experiment_config(path: str | Path) -> ExperimentConfig:
     data = json.loads(Path(path).read_text())
+    model_data = dict(data["model"])
+    if "position_shape" in model_data:
+        model_data["position_shape"] = tuple(model_data["position_shape"])
+    optimizer_data = dict(data.get("optimizer", {}))
+    if "betas" in optimizer_data:
+        optimizer_data["betas"] = tuple(optimizer_data["betas"])
     return ExperimentConfig(
         name=data["name"],
         domain=data["domain"],
-        model=LDTConfig(**data["model"]),
+        model=LDTConfig(**model_data),
         loss=LDTLossConfig(**data.get("loss", {})),
         step=LatticeStepConfig(**data.get("step", {})),
         pool=PoolConfig(**data.get("pool", {"pool_size": 512})),
         inference=_load_inference_config(data.get("inference", {})),
-        optimizer=OptimizerConfig(**data.get("optimizer", {})),
+        optimizer=OptimizerConfig(**optimizer_data),
         metadata=data.get("metadata", {}),
     )
 

@@ -39,3 +39,17 @@ python3 -m venv .venv
 .venv/bin/python -m pip install numpy pytest
 .venv/bin/python -m pytest
 ```
+
+Run the tiny smoke-overfit check:
+
+```bash
+.venv/bin/python -m ldt.cli.smoke_overfit --steps 25 --output .context/smoke-overfit.pt
+```
+
+Train/evaluate entrypoints are available as Python modules or installed console
+commands:
+
+```bash
+.venv/bin/python -m ldt.cli.train --config configs/sudoku_extreme.json --train-data data/sudoku.txt --steps 100 --output runs/sudoku.pt
+.venv/bin/python -m ldt.cli.eval --config configs/sudoku_extreme.json --checkpoint runs/sudoku.pt --eval-data data/sudoku-test.txt
+```
