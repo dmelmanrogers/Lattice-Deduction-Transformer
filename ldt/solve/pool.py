@@ -7,7 +7,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from ldt.domains.base import PuzzleInstance
-from ldt.lattice import LatticeState
+from ldt.lattice import LatticeState, alpha, meet
 from ldt.solve.step import LatticeStepResult
 
 
@@ -30,6 +30,7 @@ class PoolEntry:
     initial_state: LatticeState
     state: LatticeState
     solutions: NDArray[np.int64]
+    last_nonempty_target: LatticeState
     age: int = 0
     metadata: dict[str, object] = field(default_factory=dict)
 
@@ -37,22 +38,35 @@ class PoolEntry:
     def from_instance(cls, instance: PuzzleInstance) -> PoolEntry:
         if instance.solutions is None:
             raise ValueError("on-policy training pool entries require sampled solutions")
+        solutions = np.asarray(instance.solutions, dtype=np.int64).copy()
+        abstract = alpha(
+            solutions,
+            vocab_size=instance.initial_state.vocab_size,
+            active=instance.initial_state.active,
+        )
+        target = meet(instance.initial_state, abstract)
         return cls(
             puzzle_id=instance.puzzle_id,
             raw=instance.raw,
             initial_state=instance.initial_state.copy(),
             state=instance.initial_state.copy(),
-            solutions=np.asarray(instance.solutions, dtype=np.int64).copy(),
+            solutions=solutions,
+            last_nonempty_target=target,
             metadata=dict(instance.metadata),
         )
 
-    def advanced(self, state: LatticeState) -> PoolEntry:
+    def advanced(
+        self,
+        state: LatticeState,
+        last_nonempty_target: LatticeState | None = None,
+    ) -> PoolEntry:
         return PoolEntry(
             puzzle_id=self.puzzle_id,
             raw=self.raw,
             initial_state=self.initial_state,
             state=state,
             solutions=self.solutions,
+            last_nonempty_target=last_nonempty_target or self.last_nonempty_target,
             age=self.age + 1,
             metadata=dict(self.metadata),
         )
@@ -127,6 +141,7 @@ class OnPolicyTrainingPool:
         self,
         batch: PoolBatch,
         result: LatticeStepResult,
+        next_last_nonempty_target: LatticeState | None = None,
     ) -> PoolUpdateStats:
         batch_size = len(batch.entries)
         if result.state.batch_shape != (batch_size,):
@@ -144,7 +159,13 @@ class OnPolicyTrainingPool:
                 result.state.candidates[row_idx],
                 result.state.active[row_idx],
             )
-            advanced = entry.advanced(next_state)
+            next_target = None
+            if next_last_nonempty_target is not None:
+                next_target = LatticeState(
+                    next_last_nonempty_target.candidates[row_idx],
+                    next_last_nonempty_target.active[row_idx],
+                )
+            advanced = entry.advanced(next_state, next_target)
             is_aged_out = advanced.age >= self.config.max_age
             terminal = bool(solved[row_idx] or conflict[row_idx] or is_aged_out)
 

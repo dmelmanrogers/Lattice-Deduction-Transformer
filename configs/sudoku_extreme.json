@@ -1,0 +1,34 @@
+{
+  "domain": "sudoku",
+  "inference": {
+    "chains_per_slot": 64,
+    "model_train_mode": false,
+    "num_slots": 8,
+    "round_budget": 1000,
+    "step": {
+      "enable_branching": true,
+      "tau_decide": 1.5,
+      "theta_cls": 0.6,
+      "theta_elim": 0.1
+    }
+  },
+  "model": {
+    "candidate_channels": 9,
+    "d_model": 128,
+    "dropout": 0.1,
+    "ffn_multiplier": 4.0,
+    "input_channels": 9,
+    "num_heads": 4,
+    "num_layers": 4,
+    "num_loops": 16,
+    "num_positions": 81,
+    "position_shape": [9, 9],
+    "rope_base": 10000.0,
+    "use_rope": false
+  },
+  "name": "sudoku-extreme-base",
+  "pool": {
+    "max_age": 100,
+    "pool_size": 512
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "domain": "snowflake",
+  "model": {
+    "candidate_channels": 6,
+    "d_model": 128,
+    "dropout": 0.1,
+    "ffn_multiplier": 4.0,
+    "input_channels": 7,
+    "num_heads": 4,
+    "num_layers": 4,
+    "num_loops": 16,
+    "num_positions": 150,
+    "position_shape": [15, 10],
+    "rope_base": 10000.0,
+    "use_rope": false
+  },
+  "name": "snowflake-base",
+  "pool": {
+    "max_age": 100,
+    "pool_size": 512
+  }
+}

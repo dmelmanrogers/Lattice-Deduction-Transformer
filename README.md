@@ -23,6 +23,10 @@ problem-specific solver implementations.
 - On-policy training pool for recent partially-deduced lattice states.
 - Batched inference engine with slots, parallel chains, validator-backed
   acceptance, timeout abstention, conflict resets, and aggregate metrics.
+- Paper loss targets/objective, bounded training-step orchestration, optimizer
+  factories, configs, checkpoints, dataset loaders, and evaluation wrappers.
+- Snowflake Sudoku and Maze-Hard domain adapters with solver-facing feature
+  channels and validators.
 - Deterministic tests for lattice laws, alpha semantics, masks, and Sudoku validation.
 
 ## Development
