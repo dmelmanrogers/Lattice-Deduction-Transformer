@@ -83,11 +83,10 @@ class RecurrentLDT(nn.Module):
             device=lattice_signal.device,
             dtype=lattice_signal.dtype,
         )
-        cell_tokens = lattice_signal + position_signal
+        cell_tokens = position_signal.expand(batch, -1, -1)
         cls_token = self.cls_token.expand(batch, -1, -1)
 
         hidden = torch.cat([cls_token, cell_tokens], dim=1)
-        hidden = self.input_dropout(hidden)
 
         zero_cls_signal = torch.zeros_like(cls_token)
         reinjection = torch.cat([zero_cls_signal, lattice_signal], dim=1)
@@ -97,8 +96,9 @@ class RecurrentLDT(nn.Module):
         hidden_states: list[Tensor] = []
 
         for loop_index in range(self.config.num_loops):
-            if loop_index > 0:
-                hidden = hidden + reinjection
+            hidden = hidden + reinjection
+            if loop_index == 0:
+                hidden = self.input_dropout(hidden)
             for block in self.blocks:
                 hidden = block(hidden)
 
